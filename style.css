@@ -1,0 +1,18 @@
+h1{
+    text-align: center;
+    margin: 15px;
+    font-size: 130px;
+    font-family: robotoBold;
+    color: darkgray;
+}
+h3{
+    text-align: center;
+    font-family: robotBold;
+}
+body{
+    margin: 0;
+}
+@font-face{
+    src: url(../Gti-Clicker/Fonts/Roboto/Roboto-MediumItalic.ttf);
+    font-family: robotoBold;
+}
