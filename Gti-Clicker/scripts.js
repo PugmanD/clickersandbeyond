@@ -19,14 +19,23 @@ var fruit6 = Math.floor(Math.random() * 90);
 var fruit6ClckTimes = 0;
 var fruit7ClckTimes = 0;
 var fruit7 = Math.floor(Math.random() * 90);
-var peachLeechclicks = 0;
+var peachLeechClicks = 0;
 var codeUsed = "false";
-var Game = {version: "V:1.0.2", mode: "Beta"};
+var Game = {version: "V:1.6.12", mode: "Beta"};
 var raisinAmount = false;
-var achievement = {firstClick: "there's a first for everything"};
-var achievementsUnlocked = [];
-var firstClickUsed = false;
+var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text"};
+var firstClickUsed = "false";
+var firstForEverythingOpen = false;
+var gettingAllTechyUsed = "false";
+var gettingAllTechyOpen = false;
 var llamaClicks = 0;
+var robotoLettersClicked = false;
+var achievementsUnlocked = [];
+var clicksPerClick = 1;
+var v6Owned = "false";
+var llamaFail = false;
+//Temperary take away when you have the next layvol ready
+var comingSoonOpen = false;
 setInterval(save, 10000);
 document.getElementById("fruit1").style.display = "none";
 document.getElementById("fruit2").style.display = "none";
@@ -60,24 +69,48 @@ document.getElementById("alpaca").style.display = "none";
 document.getElementById("llamaText").style.display = "none";
 document.getElementById("llamaClicks").style.display = "none";
 document.getElementById("hider").style.display = "none";
+document.getElementById("engine").style.display = "none";
+document.getElementById("llamaTimer").style.display = "none";
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+});
 document.getElementById("input").addEventListener("keyup", function(e){
     if(e.keyCode == 13){
         checkIfCorrrectCode();
     }
 });
+document.getElementById("llamaText").addEventListener("click", function(){
+    if(robotoLettersClicked == false){
+        robotoLettersClicked = true;
+    }
+});
+document.getElementById("llamaClicks").addEventListener("click", function(){
+    if(robotoLettersClicked == false){
+        robotoLettersClicked = true;
+    }
+});
+function V6Engine(){
+    if(carClicks >= 5000 && v6Owned == "false"){
+        carClicks = carClicks - 5000;
+        v6Owned = "true";
+        clicksPerClick = 2;
+    }
+}
 function restartGame(){
-    reset();
+    location.reload();
 }
 function showBtnHolder(){
     document.getElementById("btnHolder").style.left = "0px";
     document.getElementById("gas87").style.display = "block";
     document.getElementById("gas89").style.display = "block";
+    document.getElementById("engine").style.display = "block";
     document.getElementById("hider").style.display = "block";
 }
 function hideBtnHolder(){
     document.getElementById("hider").style.display = "none";
     document.getElementById("gas87").style.display = "none";
     document.getElementById("gas89").style.display = "none";
+    document.getElementById("engine").style.display = "none";
     document.getElementById("btnHolder").style.left = "-260px";
 }
 function checkIfCorrrectCode(){
@@ -98,21 +131,26 @@ function checkIfCorrrectCode(){
     }
 }
 function updatePeachLeechClickCounter(){
-    document.getElementById("peachLeechClickCounter").innerHTML = peachLeechclicks;
+    document.getElementById("peachLeechClickCounter").innerHTML = peachLeechClicks;
 }
 function save(){
     window.localStorage.setItem("numberSave", carClicks);
     window.localStorage.setItem("autoclicks", autoClicks);
     window.localStorage.setItem("codeUsed", codeUsed);
-    window.localStorage.setItem("unlockedAchievements", achievementsUnlocked);
     window.localStorage.setItem("firstClickUsed", firstClickUsed);
+    window.localStorage.setItem("gettingAllTechyUsed", gettingAllTechyUsed);
+    window.localStorage.setItem("clicksPerClick", clicksPerClick);
+    window.localStorage.setItem("v6Owned", v6Owned);
     console.log("Game Saved!");
 }
 function load(){
     carClicks = parseInt(window.localStorage.getItem("numberSave"));
     autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
+    clicksPerClick = parseInt(window.localStorage.getItem("clicksPerClick"));
     codeUsed = window.localStorage.getItem("codeUsed");
-    achievementsUnlocked = window.localStorage.getItem("unlockedAchievements");
+    firstClickUsed = window.localStorage.getItem("firstClickUsed");
+    gettingAllTechyUsed = window.localStorage.getItem("gettingAllTechyUsed");
+    v6Owned = window.localStorage.getItem("v6Owned");
     document.getElementById("loader").style.display = "none";
 }
 function playAudio(){
@@ -128,21 +166,27 @@ function playAudio(){
     }
 }
 function reset(){
-    if(confirm("You're restarting the game duh.")){
-        window.localStorage.setItem("numberSave", 0);
-        window.localStorage.setItem("autoclicks", 0);
-        window.localStorage.setItem("codeUsed", "false");
-        carClicks = parseInt(window.localStorage.getItem("numberSave"));
-        autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
-        codeUsed = window.localStorage.getItem("codeUsed");
-    }
+    window.localStorage.setItem("numberSave", 0);
+    window.localStorage.setItem("autoclicks", 0);
+    window.localStorage.setItem("clicksPerClick", 1);
+    window.localStorage.setItem("codeUsed", "false");
+    window.localStorage.setItem("firstClickUsed", "false");
+    window.localStorage.setItem("gettingAllTechyUsed", "false");
+    window.localStorage.setItem("v6Owned", "false");
+    carClicks = parseInt(window.localStorage.getItem("numberSave"));
+    autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
+    clicksPerClick = parseInt(window.localStorage.getItem("clicksPerClick"));
+    codeUsed = window.localStorage.getItem("codeUsed");
+    firstClickUsed = window.localStorage.getItem("firtClickUsed");
+    gettingAllTechyUsed = window.localStorage.getItem("gettingAllTechyUsed");
+    v6Owned = window.localStorage.getItem("v6Owned");
 }
 function add(){
-    carClicks = carClicks + 1
+    carClicks = carClicks + clicksPerClick;
     document.getElementById("clicks").innerHTML = carClicks;
 }
 function gas87(){
-    if(carClicks >= 300){
+    if(carClicks >= 300 && autoClicks <= 20 || carClicks >= 300 && v6Owned == "true"){
         carClicks = carClicks - 300;
         autoClicks = autoClicks + 1;
     }
@@ -169,6 +213,7 @@ function update(){
     carClicks = Math.round(carClicks);
     document.title = "Gti Clicker: " + carClicks + " Clicks";
     document.getElementById("autoclicks").innerHTML = "Autoclicks: " + autoClicks;
+    document.getElementById("llamaClicks").innerHTML = "Llama Clicks: " + llamaClicks;
     if(isNaN(carClicks)){
         window.localStorage.setItem("numberSave", 0);
         window.localStorage.setItem("autoclicks", 0);
@@ -177,8 +222,63 @@ function update(){
         autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
         codeUsed = window.localStorage.getItem("codeUsed");
     }
+    if(isNaN(clicksPerClick)){
+        if(v6Owned == "true"){
+            clicksPerClick = 2;
+        }else{
+            clicksPerClick = 1;
+        }
+    }
+    if(firstClickUsed == null){
+        firstClickUsed = "false";
+    }
+    if(gettingAllTechyUsed == null){
+        gettingAllTechyUsed = "false";
+    }
+    if(v6Owned == null){
+        v6Owned = "false";
+    }
+    if(codeUsed == null){
+        codeUsed = "false";
+    }
     if(carClicks == 0){
         document.title = "Gti Clicker";
+    }
+    if(autoClicks >= 21 && v6Owned == "false"){
+        autoClicks = 20;
+        alert("You can only have up to 20 autoclicks with the 4 cylinder engine, upgrade to V6 for up to 400 autoclicks. (Also your wasting your money faster than I waste mine, if you do that. Meaning it charges you for autoclicks that you won't even get)");
+    }
+    if(v6Owned == "true" && clicksPerClick <= 1){
+        clicksPerClick = 2;
+    }
+    if(firstClickUsed == "true" && !achievementsUnlocked.includes("First for everything")){
+        achievementsUnlocked.push("First for everything");
+    }
+    if(gettingAllTechyUsed == "true" && !achievementsUnlocked.includes("Why are you getting all techy?")){
+        achievementsUnlocked.push("Why are you getting all techy?");
+    }
+    if(llamaClicks >= 35 && comingSoonOpen == false){
+        var elem = document.createElement("h2");
+        elem.innerHTML = "More coming soon? Keep checking in to find out!";
+        document.body.appendChild(elem);
+        document.getElementById("llama").style.display = "none";
+        document.getElementById("alpaca").style.display = "none";
+        document.getElementById("llamaText").style.display = "none";
+        document.getElementById("llamaTimer").style.display = "none";
+        document.getElementById("llamaClicks").style.display = "none";
+        document.getElementById("version").style.display = "none";
+        comingSoonOpen = true;
+    }
+    if(llamaClicks <= -35 && llamaFail == false){
+        document.getElementById("llama").style.display = "none";
+        document.getElementById("alpaca").style.display = "none";
+        document.getElementById("llamaText").style.display = "none";
+        document.getElementById("llamaTimer").style.display = "none";
+        document.getElementById("llamaClicks").style.display = "none";
+        document.getElementById("version").style.display = "none";
+        document.getElementById("dust").style.color = "black";
+        dust();
+        llamaFail = true;
     }
 }
 function updateAutoClicks(){
@@ -347,7 +447,7 @@ function peachLeech(){
         carClicks = carClicks - carClicks * .03;
     }, 2000)
     setInterval(function(){
-        if (peachLeechclicks == 60){
+        if (peachLeechClicks >= 60){
             clearInterval(take);
             document.getElementById("peachLeech").style.display = "none";
             document.getElementById("body").style.animationName = "turnNormal";
@@ -355,14 +455,14 @@ function peachLeech(){
         }
     }, 0);
     setTimeout(function(){
-        if (peachLeechclicks < 60){
+        if (peachLeechClicks < 60){
             endPeachLeech();
             clearInterval(take);
         }
     }, 25000);
 }
 function endPeachLeech(){
-    if (peachLeechclicks >= 60){
+    if (peachLeechClicks >= 60){
         document.getElementById("peachLeechClickCounter").style.display = "none";
         document.getElementById("peachLeech").style.display = "none";
         document.getElementById("image").style.display = "block";
@@ -381,6 +481,7 @@ function dust(){
     document.getElementById("audio").pause();
     document.getElementById("zim").pause();
     document.getElementById("lost").style.display = "block";
+    reset();
 }
 function turnBlack(){
     document.getElementById("body").style.backgroundColor = "black";
@@ -395,8 +496,8 @@ function peachPosition(){
     document.getElementById("peachLeech").style.left = Math.floor(Math.random() * 90) + "%";
 }
 function peachLeechAdd(){
-    peachLeechclicks = peachLeechclicks + 1;
-    if (peachLeechclicks == 60){
+    peachLeechClicks = peachLeechClicks + 1;
+    if (peachLeechClicks == 60){
         document.getElementById("bowl").style.display = "block";
         document.getElementById("flour").style.display = "block";
         document.getElementById("yeast").style.display = "block";
@@ -405,7 +506,7 @@ function peachLeechAdd(){
         document.getElementById("water").style.display = "block";
         document.getElementById("peachLeechClickCounter").style.display = "none";
     }
-    if (peachLeechclicks >= 60){
+    if (peachLeechClicks >= 60){
         document.getElementById("peachLeech").style.display = "none";
         if (music == 1){
             document.getElementById("audio").pause();
@@ -433,7 +534,7 @@ function flourTrigger(){
                 document.getElementById("bowl").src = "Images/Bowl and cinnamon.png";
                 document.getElementById("water").addEventListener("click", function(){
                     document.getElementById("water").style.display = "none";
-                    document.getElementById("bowl").src = "Images/Bowl and poof.png";
+                    document.getElementById("bowl").src = ".Images/Bowl and poof.png";
                     setTimeout(function(){
                         startRaisinLoop();
                         document.getElementById("bowl").style.display = "none";
@@ -453,10 +554,28 @@ function startRaisinLoop(){
             document.getElementById("llama").style.display = "block";
             document.getElementById("alpaca").style.display = "block";
             document.getElementById("llamaText").style.display = "block";
+            document.getElementById("llamaTimer").style.display = "block";
+            document.getElementById("llamaClicks").style.display = "block";
             document.getElementById("llama").style.left = "30%";
             document.getElementById("alpaca").style.left = "60%";
-            document.getElementById("llama").style.top = "80%";
-            document.getElementById("alpaca").style.top = "79%";
+            document.getElementById("llama").style.top = "42%";
+            document.getElementById("alpaca").style.top = "40%";
+            document.getElementById("zim").pause();
+            var timeLeft = 60;
+            var llamaTimer = setInterval(function(){
+                timeLeft -= 1;
+                document.getElementById("llamaTimer").innerHTML = "Time left: " + timeLeft;
+                if(timeLeft <= 0){
+                    document.getElementById("llama").style.display = "none";
+                    document.getElementById("alpaca").style.display = "none";
+                    document.getElementById("llamaText").style.display = "none";
+                    document.getElementById("llamaTimer").style.display = "none";
+                    document.getElementById("llamaClicks").style.display = "none";
+                    document.getElementById("version").style.display = "none";
+                    document.getElementById("dust").style.color = "black";
+                    dust();
+                }
+            }, 1000);
         }else{
             dust();
             document.getElementById("dust").style.transition = "all 1s"
@@ -498,21 +617,41 @@ function alpacaClick(){
     llamaClicks = llamaClicks - 1;
 }
 function firstForEverything(){
-    if(firstClickUsed == false){
+    if(firstClickUsed == "false"){
         document.getElementById("alert").style.display = "block";
         document.getElementById("achievement").innerHTML = achievement.firstClick;
+        firstClickUsed = "true";
+        firstForEverythingOpen = true;
+    }
+}
+function gettingAllTechy(){
+    if(gettingAllTechyUsed == "false"){
+        document.getElementById("alert").style.display = "block";
+        document.getElementById("achievement").innerHTML = achievement.gettingTechy;
+        gettingAllTechyUsed = "true";
+        gettingAllTechyOpen = true;
+        carClicks += 1000;
     }
 }
 function hideAlert(){
     document.getElementById("alert").style.display = "none";
-    firstClickUsed = true;
+    if(firstForEverythingOpen == true){
+        firstForEverythingOpen = false;
+    }
+    if(gettingAllTechyOpen = true){
+        gettingAllTechyOpen = false;
+    }
 }
 function achievementCheck(){
-    if(carClicks == 1 && firstClickUsed == false){
+    if(carClicks == 1 && firstClickUsed == "false"){
         firstForEverything();
+    }
+    if(robotoLettersClicked == true){
+        gettingAllTechy();
     }
 }
 setInterval(update, 0);
 setInterval(updatePeachLeechClickCounter, 0);
 setInterval(updateAutoClicks, 1000);
 setInterval(achievementCheck, 0);
+console.log("Warning! Do not use this unless you know what you are doing. You could break the game for yourself!");

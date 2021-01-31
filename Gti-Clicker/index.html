@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="style.css">
         <meta name="veiwport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body id="body" onload="load()">
+    <body id="body" onload="load()"></body>
         <img src="Images/Golf Gti.png" width="400" onclick="add()" id="image" draggable="false">
         <audio src="Audio/Animal crossing.mp3" id="audio"></audio>
         <audio src="Audio/UH Oh.wav" id="uhoh"></audio>
@@ -37,8 +37,8 @@
         <audio src="Audio/Nope.mp3" id="nope"></audio>
         <audio src="Audio/Enemy spotted.mp3" id="enemy"></audio>
         <!--Llama and alpaca-->
-        <img src="Images/Alpaca.png" id="alpaca" width="340px" onmouseover="playNope()" onclick="alpacaClick()">
-        <img src="Images/Llamma.png" id="llama" width="250px" onmouseover="playEnemeySpotted()" onclick="llamaClick()">
+        <img src="Images/Alpaca.png" id="alpaca" width="340px" onmouseover="playNope()" onclick="alpacaClick()" draggable="false">
+        <img src="Images/Llamma.png" id="llama" width="250px" onmouseover="playEnemeySpotted()" onclick="llamaClick()" draggable="false">
         <!--Misc.-->
         <span id="span" onclick="show()">Show Autoclicks</span>
         <h2 id="autoclicks">Autoclicks: 0</h2>
@@ -51,10 +51,11 @@
         <div id="loader" class="loader">
             <h1 class="loadingText" id="loadingText">Loading</h1>
         </div>
-        <a href="https://twitter.com/ClickerGti" target="_blank" class="twitter">@ClickerGti</a>
+        <a href="https://twitter.com/GtiClicker" target="_blank" class="twitter">@GtiClicker</a>
         <div class="btn-holder" id="btnHolder">
             <button class="button" id="gas87" onclick="gas87()">Gas <br><strong>87</strong>(300 Clicks & 1 autoclicks)</button>
             <button class="button" id="gas89" onclick="gas89()">Gas <br><strong>89</strong>(1000 Clicks & 5 autoclicks)</button>
+            <button class="buttonSpecial" id="engine" onclick="V6Engine()">Upgrade engine to <strong>V6</strong>(5000 Clicks allows you to have up to 400 autoclicks and also gives you 2 CpCs)</button>
         </div>
         <div class="opener" id="opener" onclick="showBtnHolder()">&gt;</div>
         <div class="hider" id="hider" onclick="hideBtnHolder()">&lt;</div>
@@ -62,15 +63,16 @@
             <h2 id="clicks">0</h2>
             <h4 id="clicks">POINTS</h4>
             <input type="text" placeholder="ENTER CODE HERE" id="input">
-            <button class="button" onclick="reset()" id="button">Restart Game</button>
-            <button class="button" onclick="playAudio()" id="music">Music On</button>
+            <button onclick="reset()" id="button">Restart Game</button>
+            <button onclick="playAudio()" id="music">Music On</button>
         </div>
         <div class="alert" id="alert">
             <span>You unlocked the achievement <strong id="achievement"></strong> see more in the achievment panel</span>
             <span class="x" onclick="hideAlert()">&times;</span>
         </div>
-        <h2 id="llamaText">A llama and an alpaca have come to eat your rolls with raisins... Click the llama not the alpaca!</h2>
-        <h4 id="llamaClicks">Llama Clicks: 0</h4>
+        <h2 id="llamaText" onclick="robotoLettersClicked = true">A llama and an alpaca have come to eat your rolls with raisins... Click the llama not the alpaca!</h2>
+        <h4 id="llamaClicks" onclick="robotoLettersClicked = true">Llama Clicks: 0</h4>
+        <h3 id="llamaTimer" onclick="robotoLettersClicked = true">Time left: 60</h3>
         <p id="version"></p>
         <script src="scripts.js"></script>
         <noscript>Huh, looks like javascript is disabled figure out how to turn it back on</noscript>
