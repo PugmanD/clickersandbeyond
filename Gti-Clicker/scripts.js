@@ -534,7 +534,7 @@ function flourTrigger(){
                 document.getElementById("bowl").src = "Images/Bowl and cinnamon.png";
                 document.getElementById("water").addEventListener("click", function(){
                     document.getElementById("water").style.display = "none";
-                    document.getElementById("bowl").src = ".Images/Bowl and poof.png";
+                    document.getElementById("bowl").src = "Images/Bowl and poof.png";
                     setTimeout(function(){
                         startRaisinLoop();
                         document.getElementById("bowl").style.display = "none";
