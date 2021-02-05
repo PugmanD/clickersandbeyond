@@ -21,7 +21,7 @@ var fruit7ClckTimes = 0;
 var fruit7 = Math.floor(Math.random() * 90);
 var peachLeechClicks = 0;
 var codeUsed = "false";
-var Game = {version: "V:1.6.12", mode: "Beta"};
+var Game = {version: "V:1.6.15", mode: "Beta"};
 var raisinAmount = false;
 var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text"};
 var firstClickUsed = "false";
@@ -34,6 +34,9 @@ var achievementsUnlocked = [];
 var clicksPerClick = 1;
 var v6Owned = "false";
 var llamaFail = false;
+var llamaTimerCancel = false;
+var offline = false;
+var v8Owned = "false";
 //Temperary take away when you have the next layvol ready
 var comingSoonOpen = false;
 setInterval(save, 10000);
@@ -89,11 +92,26 @@ document.getElementById("llamaClicks").addEventListener("click", function(){
         robotoLettersClicked = true;
     }
 });
+function cylinders(){
+    if(carClicks >= 10000 && v6Owned == "true"){
+        carClicks -= 10000;
+        autoClicks += 60;
+    }else if(carClicks >= 10000 && v6Owned == "false"){
+        alert("You have to have the V6 engine to buy upgrades below it.");
+    }
+}
 function V6Engine(){
     if(carClicks >= 5000 && v6Owned == "false"){
         carClicks = carClicks - 5000;
         v6Owned = "true";
         clicksPerClick = 2;
+    }
+}
+function V8Engine(){
+    if(carClicks >= 1000000 && v6Owned == "true" && v8Owned == "false"){
+        carClicks -= 1000000;
+        v8Owned = "true";
+        clicksPerClick = 4;
     }
 }
 function restartGame(){
@@ -141,6 +159,7 @@ function save(){
     window.localStorage.setItem("gettingAllTechyUsed", gettingAllTechyUsed);
     window.localStorage.setItem("clicksPerClick", clicksPerClick);
     window.localStorage.setItem("v6Owned", v6Owned);
+    window.localStorage.setItem("v8Owned", v8Owned);
     console.log("Game Saved!");
 }
 function load(){
@@ -151,6 +170,7 @@ function load(){
     firstClickUsed = window.localStorage.getItem("firstClickUsed");
     gettingAllTechyUsed = window.localStorage.getItem("gettingAllTechyUsed");
     v6Owned = window.localStorage.getItem("v6Owned");
+    v8Owned = window.localStorage.getItem("v8Owned");
     document.getElementById("loader").style.display = "none";
 }
 function playAudio(){
@@ -173,6 +193,7 @@ function reset(){
     window.localStorage.setItem("firstClickUsed", "false");
     window.localStorage.setItem("gettingAllTechyUsed", "false");
     window.localStorage.setItem("v6Owned", "false");
+    window.localStorage.setItem("v8Owned", "false");
     carClicks = parseInt(window.localStorage.getItem("numberSave"));
     autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
     clicksPerClick = parseInt(window.localStorage.getItem("clicksPerClick"));
@@ -180,6 +201,7 @@ function reset(){
     firstClickUsed = window.localStorage.getItem("firtClickUsed");
     gettingAllTechyUsed = window.localStorage.getItem("gettingAllTechyUsed");
     v6Owned = window.localStorage.getItem("v6Owned");
+    v8Owned = window.localStorage.getItem("v8Owned");
 }
 function add(){
     carClicks = carClicks + clicksPerClick;
@@ -187,14 +209,18 @@ function add(){
 }
 function gas87(){
     if(carClicks >= 300 && autoClicks <= 20 || carClicks >= 300 && v6Owned == "true"){
-        carClicks = carClicks - 300;
-        autoClicks = autoClicks + 1;
+        if(autoClicks <= 400 || v8Owned == "true"){
+            carClicks = carClicks - 300;
+            autoClicks = autoClicks + 1;
+        }
     }
 }
 function gas89(){
-    if(carClicks >= 1000){
-        carClicks = carClicks - 1000;
-        autoClicks = autoClicks + 5;
+    if(carClicks >= 1000 && autoClicks <= 20 || carClicks >= 1000 && v6Owned == "true"){
+        if(autoClicks <= 400 || v8Owned == "true"){
+            carClicks = carClicks - 1000;
+            autoClicks = autoClicks + 5;
+        }
     }
 }
 function show(){
@@ -225,6 +251,8 @@ function update(){
     if(isNaN(clicksPerClick)){
         if(v6Owned == "true"){
             clicksPerClick = 2;
+        }else if(v8Owned == "true"){
+            clicksPerClick = 4;
         }else{
             clicksPerClick = 1;
         }
@@ -234,6 +262,9 @@ function update(){
     }
     if(gettingAllTechyUsed == null){
         gettingAllTechyUsed = "false";
+    }
+    if(v8Owned == null){
+        v8Owned = "false";
     }
     if(v6Owned == null){
         v6Owned = "false";
@@ -246,10 +277,17 @@ function update(){
     }
     if(autoClicks >= 21 && v6Owned == "false"){
         autoClicks = 20;
-        alert("You can only have up to 20 autoclicks with the 4 cylinder engine, upgrade to V6 for up to 400 autoclicks. (Also your wasting your money faster than I waste mine, if you do that. Meaning it charges you for autoclicks that you won't even get)");
+        alert("You can only have up to 20 autoclicks with the 4 cylinder engine, upgrade to V6 for up to 400 autoclicks. (Also your wasting your money faster than I waste mine if you do that. Meaning it charges you for autoclicks that you won't even get)");
+    }
+    if(autoClicks >= 401 && v8Owned == "false"){
+        autoClicks = 400;
+        alert("You can only have up to 400 autoclicks with the V6 engine, upgrade to V8 for up to 2,000 autoclicks. (Also your wasting your money faster than I waste mine if you do that. Meaning it charges you for autoclicks that you won't even get)");
     }
     if(v6Owned == "true" && clicksPerClick <= 1){
         clicksPerClick = 2;
+    }
+    if(v8Owned == "true" && clicksPerClick <= 2){
+        clicksPerClick = 4;
     }
     if(firstClickUsed == "true" && !achievementsUnlocked.includes("First for everything")){
         achievementsUnlocked.push("First for everything");
@@ -268,6 +306,7 @@ function update(){
         document.getElementById("llamaClicks").style.display = "none";
         document.getElementById("version").style.display = "none";
         comingSoonOpen = true;
+        llamaTimerCancel = true;
     }
     if(llamaClicks <= -35 && llamaFail == false){
         document.getElementById("llama").style.display = "none";
@@ -279,7 +318,14 @@ function update(){
         document.getElementById("dust").style.color = "black";
         dust();
         llamaFail = true;
+        llamaTimerCancel = true;
     }
+    window.addEventListener("online", function(){
+        document.getElementById("icon").href = "Images/SnapShotGamesLogoInDay.png";
+    });
+    window.addEventListener("offline", function(){
+        document.getElementById("icon").href = "Images/page offline logo.png";
+    });
 }
 function updateAutoClicks(){
     carClicks = carClicks + autoClicks;
@@ -563,22 +609,24 @@ function startRaisinLoop(){
             document.getElementById("zim").pause();
             var timeLeft = 60;
             var llamaTimer = setInterval(function(){
-                timeLeft -= 1;
-                document.getElementById("llamaTimer").innerHTML = "Time left: " + timeLeft;
-                if(timeLeft <= 0){
-                    document.getElementById("llama").style.display = "none";
-                    document.getElementById("alpaca").style.display = "none";
-                    document.getElementById("llamaText").style.display = "none";
-                    document.getElementById("llamaTimer").style.display = "none";
-                    document.getElementById("llamaClicks").style.display = "none";
-                    document.getElementById("version").style.display = "none";
-                    document.getElementById("dust").style.color = "black";
-                    dust();
+                if(llamaTimerCancel == false){
+                    timeLeft -= 1;
+                    document.getElementById("llamaTimer").innerHTML = "Time left: " + timeLeft;
+                    if(timeLeft <= 0){
+                        document.getElementById("llama").style.display = "none";
+                        document.getElementById("alpaca").style.display = "none";
+                        document.getElementById("llamaText").style.display = "none";
+                        document.getElementById("llamaTimer").style.display = "none";
+                        document.getElementById("llamaClicks").style.display = "none";
+                        document.getElementById("version").style.display = "none";
+                        document.getElementById("dust").style.color = "black";
+                        dust();
+                    }
                 }
             }, 1000);
         }else{
             dust();
-            document.getElementById("dust").style.transition = "all 1s"
+            document.getElementById("dust").style.transition = "all 1s";
             document.getElementById("dust").style.color = "lightblue";
         }
     }, 15000);

@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="style.css">
         <meta name="veiwport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body id="body" onload="load()"></body>
+    <body id="body" onload="load()">
         <img src="Images/Golf Gti.png" width="400" onclick="add()" id="image" draggable="false">
         <audio src="Audio/Animal crossing.mp3" id="audio"></audio>
         <audio src="Audio/UH Oh.wav" id="uhoh"></audio>
@@ -53,9 +53,10 @@
         </div>
         <a href="https://twitter.com/GtiClicker" target="_blank" class="twitter">@GtiClicker</a>
         <div class="btn-holder" id="btnHolder">
-            <button class="button" id="gas87" onclick="gas87()">Gas <br><strong>87</strong>(300 Clicks & 1 autoclicks)</button>
-            <button class="button" id="gas89" onclick="gas89()">Gas <br><strong>89</strong>(1000 Clicks & 5 autoclicks)</button>
-            <button class="buttonSpecial" id="engine" onclick="V6Engine()">Upgrade engine to <strong>V6</strong>(5000 Clicks allows you to have up to 400 autoclicks and also gives you 2 CpCs)</button>
+            <button class="button" id="gas87" onclick="gas87()">Gas <br><strong>87</strong>(300 Clicks gives 1 autoclicks)</button>
+            <button class="button" id="gas89" onclick="gas89()">Gas <br><strong>89</strong>(1,000 Clicks gives 5 autoclicks)</button>
+            <button class="buttonSpecial" id="engine" onclick="V6Engine()">Upgrade engine to <strong>V6</strong>(5,000 Clicks allows you to have up to 400 autoclicks and also gives you 2 CpCs)</button>
+            <button class="button" id="cylinders" onclick="cylinders()">Quote unquote "Large Cylinders" (10,000 Clicks gives 60 autoclicks)</button>
         </div>
         <div class="opener" id="opener" onclick="showBtnHolder()">&gt;</div>
         <div class="hider" id="hider" onclick="hideBtnHolder()">&lt;</div>
@@ -74,7 +75,7 @@
         <h4 id="llamaClicks" onclick="robotoLettersClicked = true">Llama Clicks: 0</h4>
         <h3 id="llamaTimer" onclick="robotoLettersClicked = true">Time left: 60</h3>
         <p id="version"></p>
-        <script src="scripts.js"></script>
+        <script src="Javascript/GTI Clicker.js"></script>
         <noscript>Huh, looks like javascript is disabled figure out how to turn it back on</noscript>
     </body>
 </html>
