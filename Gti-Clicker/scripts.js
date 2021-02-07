@@ -97,8 +97,8 @@ document.getElementById("llamaClicks").addEventListener("click", function(){
     }
 });
 function cutAHole(){
-    if(carClicks >= 1000000 && v6Owned == "true" && holeInHood == "false"){
-        carClicks -= 1000000;
+    if(carClicks >= 100000 && v6Owned == "true" && holeInHood == "false"){
+        carClicks -= 100000;
         holeInHood = "true";
         howAreYouGonnaFitThatEngine = true;
     }else if(carClicks >= 1000000 && v6Owned == "false"){
