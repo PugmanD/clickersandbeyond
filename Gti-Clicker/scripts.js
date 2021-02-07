@@ -21,9 +21,9 @@ var fruit7ClckTimes = 0;
 var fruit7 = Math.floor(Math.random() * 90);
 var peachLeechClicks = 0;
 var codeUsed = "false";
-var Game = {version: "V:1.6.15", mode: "Beta"};
+var Game = {version: "V:1.6.18", mode: "Beta"};
 var raisinAmount = false;
-var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text"};
+var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text", howAreYouGonnaFitThat: "how are you gonna get that engine in... oh thats how"};
 var firstClickUsed = "false";
 var firstForEverythingOpen = false;
 var gettingAllTechyUsed = "false";
@@ -36,7 +36,11 @@ var v6Owned = "false";
 var llamaFail = false;
 var llamaTimerCancel = false;
 var offline = false;
+var holeInHood = "false";
 var v8Owned = "false";
+var howAreYouGonnaFitThatEngine = false;
+var howAreYouGonnaFitThatEngineUsed = "false";
+var howAreYouGonnaFitThatEngineOpen = false;
 //Temperary take away when you have the next layvol ready
 var comingSoonOpen = false;
 setInterval(save, 10000);
@@ -92,6 +96,23 @@ document.getElementById("llamaClicks").addEventListener("click", function(){
         robotoLettersClicked = true;
     }
 });
+function cutAHole(){
+    if(carClicks >= 1000000 && v6Owned == "true" && holeInHood == "false"){
+        carClicks -= 1000000;
+        holeInHood = "true";
+        howAreYouGonnaFitThatEngine = true;
+    }else if(carClicks >= 1000000 && v6Owned == "false"){
+        alert("You have to have the V6 engine to buy upgrades below it.");
+    }
+}
+function nitro(){
+    if(carClicks >= 60000 && v6Owned == "true"){
+        carClicks -= 60000;
+        autoClicks += 400;
+    }else if(carClicks >= 60000 && v6Owned == "false"){
+        alert("You have to have the V6 engine to buy upgrades below it.");
+    }
+}
 function cylinders(){
     if(carClicks >= 10000 && v6Owned == "true"){
         carClicks -= 10000;
@@ -108,10 +129,14 @@ function V6Engine(){
     }
 }
 function V8Engine(){
-    if(carClicks >= 1000000 && v6Owned == "true" && v8Owned == "false"){
+    if(carClicks >= 1000000 && v6Owned == "true" && holeInHood == "true" && v8Owned == "false"){
         carClicks -= 1000000;
         v8Owned = "true";
         clicksPerClick = 4;
+    }else if(carClicks >= 1000000 && v6Owned == "false"){
+        alert("You need the V6 to upgrade to the V8 engine!");
+    }else if(carClicks >= 1000000 && holeInHood == "false"){
+        alert("Cut a hole in your hood before you put a V8 engine in.");
     }
 }
 function restartGame(){
@@ -160,6 +185,8 @@ function save(){
     window.localStorage.setItem("clicksPerClick", clicksPerClick);
     window.localStorage.setItem("v6Owned", v6Owned);
     window.localStorage.setItem("v8Owned", v8Owned);
+    window.localStorage.setItem("holeInHood", holeInHood);
+    window.localStorage.setItem("howAreYouGonnaFitThatEngineUsed", howAreYouGonnaFitThatEngineUsed);
     console.log("Game Saved!");
 }
 function load(){
@@ -171,6 +198,8 @@ function load(){
     gettingAllTechyUsed = window.localStorage.getItem("gettingAllTechyUsed");
     v6Owned = window.localStorage.getItem("v6Owned");
     v8Owned = window.localStorage.getItem("v8Owned");
+    holeInHood = window.localStorage.getItem("holeInHood");
+    howAreYouGonnaFitThatEngineUsed = window.localStorage.getItem("howAreYouGonnaFitThatEngineUsed");
     document.getElementById("loader").style.display = "none";
 }
 function playAudio(){
@@ -194,6 +223,8 @@ function reset(){
     window.localStorage.setItem("gettingAllTechyUsed", "false");
     window.localStorage.setItem("v6Owned", "false");
     window.localStorage.setItem("v8Owned", "false");
+    window.localStorage.setItem("holeInHood", "false");
+    window.localStorage.setItem("howAreYouGonnaFitThatEngineUsed", "false");
     carClicks = parseInt(window.localStorage.getItem("numberSave"));
     autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
     clicksPerClick = parseInt(window.localStorage.getItem("clicksPerClick"));
@@ -202,6 +233,8 @@ function reset(){
     gettingAllTechyUsed = window.localStorage.getItem("gettingAllTechyUsed");
     v6Owned = window.localStorage.getItem("v6Owned");
     v8Owned = window.localStorage.getItem("v8Owned");
+    holeInHood = window.localStorage.getItem("holeInHood");
+    howAreYouGonnaFitThatEngineUsed = window.localStorage.getItem("howAreYouGonnaFitThatEngineUsed");
 }
 function add(){
     carClicks = carClicks + clicksPerClick;
@@ -257,6 +290,15 @@ function update(){
             clicksPerClick = 1;
         }
     }
+    if(v8Owned == "true" && holeInHood == "false"){
+        v8Owned = "false";
+    }
+    if(howAreYouGonnaFitThatEngineUsed == null){
+        howAreYouGonnaFitThatEngineUsed = "false";
+    }
+    if(holeInHood == null){
+        holeInHood = "false";
+    }
     if(firstClickUsed == null){
         firstClickUsed = "false";
     }
@@ -294,6 +336,9 @@ function update(){
     }
     if(gettingAllTechyUsed == "true" && !achievementsUnlocked.includes("Why are you getting all techy?")){
         achievementsUnlocked.push("Why are you getting all techy?");
+    }
+    if(howAreYouGonnaFitThatEngineUsed == "true" && !achievementsUnlocked.includes("How are you gonna fit that engine?")){
+        achievementsUnlocked.push("How are you gonna fit that engine?");
     }
     if(llamaClicks >= 35 && comingSoonOpen == false){
         var elem = document.createElement("h2");
@@ -681,6 +726,14 @@ function gettingAllTechy(){
         carClicks += 1000;
     }
 }
+function howAreYouGonnaFitThat(){
+    if(howAreYouGonnaFitThatEngineUsed == "false"){
+        document.getElementById("alert").style.display = "block";
+        document.getElementById("achievement").innerHTML = achievement.howAreYouGonnaFitThat;
+        howAreYouGonnaFitThatEngineUsed = "true";
+        howAreYouGonnaFitThatEngineOpen = true;
+    }
+}
 function hideAlert(){
     document.getElementById("alert").style.display = "none";
     if(firstForEverythingOpen == true){
@@ -689,6 +742,9 @@ function hideAlert(){
     if(gettingAllTechyOpen = true){
         gettingAllTechyOpen = false;
     }
+    if(howAreYouGonnaFitThatEngineOpen = true){
+        howAreYouGonnaFitThatEngineOpen = false;
+    }
 }
 function achievementCheck(){
     if(carClicks == 1 && firstClickUsed == "false"){
@@ -696,6 +752,9 @@ function achievementCheck(){
     }
     if(robotoLettersClicked == true){
         gettingAllTechy();
+    }
+    if(howAreYouGonnaFitThatEngine == true){
+        howAreYouGonnaFitThat();
     }
 }
 setInterval(update, 0);
