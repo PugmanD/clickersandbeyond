@@ -369,7 +369,7 @@ function update(){
         document.getElementById("icon").href = "Images/SnapShotGamesLogoInDay.png";
     });
     window.addEventListener("offline", function(){
-        document.getElementById("icon").href = "Images/page offline logo.png";
+        document.getElementById("icon").href = "Images/page%20offline%20logo.png";
     });
 }
 function updateAutoClicks(){
