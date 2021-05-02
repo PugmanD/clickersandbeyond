@@ -4,6 +4,8 @@
         <link id="icon" rel="icon" href="Images/SnapShotGamesLogoInDay.png">
         <link rel="stylesheet" href="style.css">
         <meta name="veiwport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A kool clicker game with lots of easter eggs but you won't know unless you click the link...">
+        <meta name="keywords" content="Gticlicker, Golf Gti, Gti, Clicker, Gti clicker, Games, Clickersandbeyond.com, Clickersandbeyond, Gti Games">
     </head>
     <body id="body" onload="load()">
         <img src="Images/Golf Gti.png" width="400" onclick="add()" id="image" draggable="false">
@@ -39,7 +41,27 @@
         <!--Llama and alpaca-->
         <img src="Images/Alpaca.png" id="alpaca" width="340px" onmouseover="playNope()" onclick="alpacaClick()" draggable="false">
         <img src="Images/Llamma.png" id="llama" width="250px" onmouseover="playEnemeySpotted()" onclick="llamaClick()" draggable="false">
+        <!--Gas Can Div-->
+        <div class="gasCanHolder"></div>
+        <!--Gas Meter Div-->
+        <div class="gasMeter">
+            <div class="gasMeterBg"></div>
+        </div>
+        <!--Schubert on tote goat-->
+        <img src="Images/schubeOnTotegoatRight.png" width="300px" id="toteGoat" draggable="false">
+        <!--supercar code cars-->
+        <div id="carHolder">
+            <img src="Images/bugattiChiron.png" draggable="false" width="400px" id="bugatti" class="car" title="Bugatti Chiron" onclick="selectBugatti()">
+            <img src="Images/lamboSvj.png" draggable="false" width="400px" id="lambo" class="car" title="Lambroghini Adventedor Svj" onclick="selectLamborghini()">
+            <img src="Images/mcLarenP1.png" draggable="false" width="400px" id="mcLaren" class="car" title="McLaren P1" onclick="selectP1()">
+            <img src="Images/paganiHuayra.png" draggable="false" width="400px" id="pagani" class="car" title="Pagani Huayra" onclick="selectPag()">
+            <img src="Images/ferrariLaferrai.png" draggable="false" width="400px" id="ferrari" class="car" title="Ferrari LaFerrari" onclick="selectLaFerrari()">
+            <img src="Images/koneJesko.png" draggable="false" width="400px" id="kone" class="car" title="Koenigsegg Jesko" onclick="selectKone()">
+        </div>
         <!--Misc.-->
+        <!--TAKE AWAY!!!-->
+        <h2 id="tempText">More coming soon? Definitely. Keep checking in! Report bugs on my <a target='_blank' href='https://github.com/PugmanD/clickersandbeyond/tree/main/Gti-Clicker'>github</a> or <a target='_blank' href='https://twitter.com/gticlicker'>twitter</a>, and always follow me and share with your friends. In my opinion this is the best update yet what do you think? Tell me on twitter!</h2>
+        <!--TAKE AWAY!!!-->
         <span id="span" onclick="show()">Show Autoclicks</span>
         <h2 id="autoclicks">Autoclicks: 0</h2>
         <div class="center">
@@ -53,9 +75,9 @@
         </div>
         <a href="https://twitter.com/GtiClicker" target="_blank" class="twitter">@GtiClicker</a>
         <div class="btn-holder" id="btnHolder">
-            <button class="button" id="gas87" onclick="gas87()">Gas <br><strong>87</strong> (300 Clicks gives 1 autoclicks)</button>
-            <button class="button" id="gas89" onclick="gas89()">Gas <br><strong>89</strong> (1,000 Clicks gives 5 autoclicks)</button>
-            <button class="buttonSpecial" id="engine" onclick="V6Engine()">Upgrade engine to <strong>V6</strong> (5,000 Clicks allows you to have up to 400 autoclicks and also gives you 2 CpCs)</button>
+            <button class="button" id="gas87" onclick="gas87()">Gas <br><strong>87</strong>(300 Clicks gives 1 autoclicks)</button>
+            <button class="button" id="gas89" onclick="gas89()">Gas <br><strong>89</strong>(1,000 Clicks gives 5 autoclicks)</button>
+            <button class="buttonSpecial" id="engine" onclick="V6Engine()">Upgrade engine to <strong>V6</strong>(5,000 Clicks allows you to have up to 400 autoclicks and also gives you 2 CpCs)</button>
             <button class="button" id="cylinders" onclick="cylinders()">Quote unquote "Large Cylinders" (10,000 Clicks gives 60 autoclicks)</button>
             <button class="button" id="nitro" onclick="nitro()">Nitro pack (60,000 Clicks gives 400 autoclicks)</button>
             <button class="buttonReqD" id="holeInHood" onclick="cutAHole()">Saw a "crude" hole in your hood (100,000 Clicks, puts a large, crude, hole in your hood so you can manage to fit a V8 engine in. Required to get V8)</button>

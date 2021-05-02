@@ -21,9 +21,9 @@ var fruit7ClckTimes = 0;
 var fruit7 = Math.floor(Math.random() * 90);
 var peachLeechClicks = 0;
 var codeUsed = "false";
-var Game = {version: "V:1.6.19", mode: "Beta"};
+var Game = {version: "V:1.7.26", mode: "Beta"};
 var raisinAmount = false;
-var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text", howAreYouGonnaFitThat: "how are you gonna get that engine in... oh thats how"};
+var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text", howAreYouGonnaFitThat: "how are you gonna get that engine in... oh thats how", /* make soon*/ kaBOOM: "kaBOOM!!!"};
 var firstClickUsed = "false";
 var firstForEverythingOpen = false;
 var gettingAllTechyUsed = "false";
@@ -41,8 +41,8 @@ var v8Owned = "false";
 var howAreYouGonnaFitThatEngine = false;
 var howAreYouGonnaFitThatEngineUsed = "false";
 var howAreYouGonnaFitThatEngineOpen = false;
-//Temperary take away when you have the next layvol ready
-var comingSoonOpen = false;
+var gas = 200;
+var schubeComplete = false;
 setInterval(save, 10000);
 document.getElementById("fruit1").style.display = "none";
 document.getElementById("fruit2").style.display = "none";
@@ -78,6 +78,10 @@ document.getElementById("llamaClicks").style.display = "none";
 document.getElementById("hider").style.display = "none";
 document.getElementById("engine").style.display = "none";
 document.getElementById("llamaTimer").style.display = "none";
+document.getElementsByClassName("gasMeter")[0].style.display = "none";
+document.getElementById("toteGoat").style.display = "none";
+document.getElementById("carHolder").style.display = "none";
+document.getElementById("tempText").style.display = "none";
 document.addEventListener("contextmenu", function(e){
     e.preventDefault();
 });
@@ -96,6 +100,36 @@ document.getElementById("llamaClicks").addEventListener("click", function(){
         robotoLettersClicked = true;
     }
 });
+function selectBugatti(){
+    document.getElementById("image").src = "Images/bugattiChiron.png";
+    document.getElementById("image").style.width = "350px";
+    document.getElementById("carHolder").style.display = "none";
+}
+function selectLamborghini(){
+    document.getElementById("image").src = "Images/lamboSvj.png";
+    document.getElementById("image").style.width = "350px";
+    document.getElementById("carHolder").style.display = "none";
+}
+function selectP1(){
+    document.getElementById("image").src = "Images/mcLarenP1.png";
+    document.getElementById("image").style.width = "350px";
+    document.getElementById("carHolder").style.display = "none";
+}
+function selectLaFerrari(){
+    document.getElementById("image").src = "Images/ferrariLaferrai.png";
+    document.getElementById("image").style.width = "350px";
+    document.getElementById("carHolder").style.display = "none";
+}
+function selectKone(){
+    document.getElementById("image").src = "Images/koneJesko.png";
+    document.getElementById("image").style.width = "350px";
+    document.getElementById("carHolder").style.display = "none";
+}
+function selectPag(){
+    document.getElementById("image").src = "Images/paganiHuayra.png";
+    document.getElementById("image").style.width = "350px"
+    document.getElementById("carHolder").style.display = "none";
+}
 function cutAHole(){
     if(carClicks >= 100000 && v6Owned == "true" && holeInHood == "false"){
         carClicks -= 100000;
@@ -157,8 +191,8 @@ function hideBtnHolder(){
     document.getElementById("btnHolder").style.left = "-260px";
 }
 function checkIfCorrrectCode(){
-    var value = document.getElementById("input").value
-    if(value != "raisin"){
+    var value = document.getElementById("input").value;
+    if(value != "raisin" && value != "supercar"){
         alert("Not correct code.");
     }
     if(codeUsed == "false"){
@@ -171,6 +205,9 @@ function checkIfCorrrectCode(){
         if(value == "raisin"){
             alert("You have used this code already.");
         }
+    }
+    if(value == "supercar"){
+        document.getElementById("carHolder").style.display = "block";
     }
 }
 function updatePeachLeechClickCounter(){
@@ -215,6 +252,7 @@ function playAudio(){
     }
 }
 function reset(){
+    robotoLettersClicked = false;
     window.localStorage.setItem("numberSave", 0);
     window.localStorage.setItem("autoclicks", 0);
     window.localStorage.setItem("clicksPerClick", 1);
@@ -290,6 +328,18 @@ function update(){
             clicksPerClick = 1;
         }
     }
+    if(gas <= 0){
+        //Later make the tote goat slowly slow down and stop then do dust in the wind but for now just do dust()
+        dust();
+        document.getElementsByClassName("gasMeter")[0].style.display = "none";
+        document.getElementById("dust").style.color = "black";
+        document.getElementById("toteGoat").style.display = "none";
+        for(var i = 0; i < 30; i++){
+            if(document.getElementById(i) != null){
+                document.getElementById(i).style.display = "none";
+            }
+        }
+    }
     if(v8Owned == "true" && holeInHood == "false"){
         v8Owned = "false";
     }
@@ -340,17 +390,13 @@ function update(){
     if(howAreYouGonnaFitThatEngineUsed == "true" && !achievementsUnlocked.includes("How are you gonna fit that engine?")){
         achievementsUnlocked.push("How are you gonna fit that engine?");
     }
-    if(llamaClicks >= 35 && comingSoonOpen == false){
-        var elem = document.createElement("h2");
-        elem.innerHTML = "More coming soon? Keep checking in to find out!";
-        document.body.appendChild(elem);
+    if(llamaClicks >= 80){
         document.getElementById("llama").style.display = "none";
         document.getElementById("alpaca").style.display = "none";
         document.getElementById("llamaText").style.display = "none";
         document.getElementById("llamaTimer").style.display = "none";
         document.getElementById("llamaClicks").style.display = "none";
         document.getElementById("version").style.display = "none";
-        comingSoonOpen = true;
         llamaTimerCancel = true;
     }
     if(llamaClicks <= -35 && llamaFail == false){
@@ -369,8 +415,18 @@ function update(){
         document.getElementById("icon").href = "Images/SnapShotGamesLogoInDay.png";
     });
     window.addEventListener("offline", function(){
-        document.getElementById("icon").href = "Images/page%20offline%20logo.png";
+        document.getElementById("icon").href = "Images/page offline logo.png";
     });
+    document.getElementsByClassName("gasMeterBg")[0].style.width = gas + "px";
+    if(gas >= 200){
+        document.getElementsByClassName("gasMeterBg")[0].style.background = "red";
+    }
+    if(gas <= 25){
+        document.getElementsByClassName("gasMeterBg")[0].style.background = "yellow";
+    }
+    if(gas < 200 && gas > 25){
+        document.getElementsByClassName("gasMeterBg")[0].style.background = "green";
+    }
 }
 function updateAutoClicks(){
     carClicks = carClicks + autoClicks;
@@ -390,18 +446,19 @@ function sone(){
     }
     if(tuberClicks == 3){
         carClicks = carClicks + 150;
-        fruitMania()
+        fruitMania();
         document.getElementById("fruit1").style.display = "block";
         document.getElementById("fruit2").style.display = "block";
     }
 }
 function fruitMania(){
-    if (music == 1){
+    if(music == 1){
         document.getElementById("audio").pause()
         setTimeout(function(){
             document.getElementById("audio").play();
         }, 15000);
     }
+    document.getElementById("opener").style.display = "none";
     document.getElementById("fruitSong").play()
     turnPurple();
     setTimeout(turnPurple, 1500);
@@ -429,7 +486,7 @@ function movefruit7(){
     fruit7ClckTimes = fruit7ClckTimes + 1;
     carClicks = carClicks + 250;
     document.getElementById("fruit7").style.top = Math.floor(Math.random() * 90) + "%";
-    if (fruit7ClckTimes < 2){
+    if(fruit7ClckTimes < 2){
         document.getElementById("fruit7").style.top = fruit7 + "%";
     }else{
         document.getElementById("fruit7").style.display = "none";
@@ -440,7 +497,7 @@ function movefruit1(){
     fruit1ClckTimes = fruit1ClckTimes + 1;
     carClicks = carClicks + 15;
     document.getElementById("fruit1").style.top = Math.floor(Math.random() * 90) + "%";
-    if (fruit1ClckTimes < 6){
+    if(fruit1ClckTimes < 6){
         document.getElementById("fruit1").style.top = fruit1 + "%";
     }else{
         document.getElementById("fruit1").style.display = "none";
@@ -453,7 +510,7 @@ function movefruit2(){
     fruit2ClckTimes = fruit2ClckTimes + 1;
     carClicks = carClicks + 20;
     document.getElementById("fruit2").style.top = Math.floor(Math.random() * 90) + "%";
-    if (fruit2ClckTimes < 6){
+    if(fruit2ClckTimes < 6){
         document.getElementById("fruit2").style.top = fruit2 + "%";
     }else{
         document.getElementById("fruit2").style.display = "none";
@@ -464,7 +521,7 @@ function movefruit3(){
     updateFruit()
     fruit3ClckTimes = fruit3ClckTimes + 1;
     carClicks = carClicks + 25;
-    if (fruit3ClckTimes < 5){
+    if(fruit3ClckTimes < 5){
         document.getElementById("fruit3").style.top = fruit3 + "%";
     }else{
         document.getElementById("fruit3").style.display = "none";
@@ -475,7 +532,7 @@ function movefruit4(){
     updateFruit()
     fruit4ClckTimes = fruit4ClckTimes + 1;
     carClicks = carClicks + 30;
-    if (fruit4ClckTimes < 4){
+    if(fruit4ClckTimes < 4){
         document.getElementById("fruit4").style.top = fruit4 + "%";
     }else{
         document.getElementById("fruit4").style.display = "none";
@@ -486,7 +543,7 @@ function movefruit5(){
     updateFruit()
     fruit5ClckTimes = fruit5ClckTimes + 1;
     carClicks = carClicks + 45;
-    if (fruit5ClckTimes < 3){
+    if(fruit5ClckTimes < 3){
         document.getElementById("fruit5").style.top = fruit5 + "%";
     }else{
         document.getElementById("fruit5").style.display = "none";
@@ -497,7 +554,7 @@ function movefruit6(){
     updateFruit()
     fruit6ClckTimes = fruit6ClckTimes + 1;
     carClicks = carClicks + 45;
-    if (fruit6ClckTimes < 2){
+    if(fruit6ClckTimes < 2){
         document.getElementById("fruit6").style.top = fruit6 + "%";
     }else{
         document.getElementById("fruit6").style.display = "none";
@@ -538,7 +595,7 @@ function peachLeech(){
         carClicks = carClicks - carClicks * .03;
     }, 2000)
     setInterval(function(){
-        if (peachLeechClicks >= 60){
+        if(peachLeechClicks >= 60){
             clearInterval(take);
             document.getElementById("peachLeech").style.display = "none";
             document.getElementById("body").style.animationName = "turnNormal";
@@ -546,14 +603,14 @@ function peachLeech(){
         }
     }, 0);
     setTimeout(function(){
-        if (peachLeechClicks < 60){
+        if(peachLeechClicks < 60){
             endPeachLeech();
             clearInterval(take);
         }
     }, 25000);
 }
 function endPeachLeech(){
-    if (peachLeechClicks >= 60){
+    if(peachLeechClicks >= 60){
         document.getElementById("peachLeechClickCounter").style.display = "none";
         document.getElementById("peachLeech").style.display = "none";
         document.getElementById("image").style.display = "block";
@@ -588,7 +645,7 @@ function peachPosition(){
 }
 function peachLeechAdd(){
     peachLeechClicks = peachLeechClicks + 1;
-    if (peachLeechClicks == 60){
+    if(peachLeechClicks == 60){
         document.getElementById("bowl").style.display = "block";
         document.getElementById("flour").style.display = "block";
         document.getElementById("yeast").style.display = "block";
@@ -597,9 +654,9 @@ function peachLeechAdd(){
         document.getElementById("water").style.display = "block";
         document.getElementById("peachLeechClickCounter").style.display = "none";
     }
-    if (peachLeechClicks >= 60){
+    if(peachLeechClicks >= 60){
         document.getElementById("peachLeech").style.display = "none";
-        if (music == 1){
+        if(music == 1){
             document.getElementById("audio").pause();
             document.getElementById("music").innerHTML = "Music On";
             document.getElementById("zim").play();
@@ -653,7 +710,7 @@ function startRaisinLoop(){
             document.getElementById("alpaca").style.top = "40%";
             document.getElementById("zim").pause();
             var timeLeft = 60;
-            var llamaTimer = setInterval(function(){
+            setInterval(function(){
                 if(llamaTimerCancel == false){
                     timeLeft -= 1;
                     document.getElementById("llamaTimer").innerHTML = "Time left: " + timeLeft;
@@ -708,6 +765,96 @@ function llamaClick(){
 }
 function alpacaClick(){
     llamaClicks = llamaClicks - 1;
+}
+var createGasCansInterval = setInterval(function(){
+    if(llamaClicks >= 80){
+        createGasCans();
+        gasCanCountDown();
+        document.getElementsByClassName("gasMeter")[0].style.display = "block";
+        document.getElementById("toteGoat").style.display = "block";
+        clearInterval(createGasCansInterval);
+    }
+}, 0);
+function createGasCans(){
+    for(var i = 0; i < 30; i++){
+        var gasCan = document.createElement("img");
+        moveSchubertOnToteGoat();
+        gasCan.setAttribute("id", i.toString());
+        gasCan.setAttribute("draggable", false);
+        gasCan.src = "Images/gas can.png";
+        gasCan.style.transform = "rotateY(180deg)";
+        gasCan.style.width = "100px";
+        gasCan.style.left = i * 100 + "px";
+        gasCan.style.display = "inline-block";
+        gasCan.style.alignItems = "center";
+        gasCan.onclick = function(e){
+            e.target.remove();
+            gas += 45;
+            carClicks += 800;
+            if(gas >= 300){
+                gasCan.onclick = null;
+                document.getElementById("toteGoat").src = "Images/explosion.gif";
+                document.getElementsByClassName("gasMeter")[0].style.display = "none";
+                setTimeout(function(){
+                    dust();
+                    document.getElementsByClassName("gasMeter")[0].style.display = "none";
+                    document.getElementById("dust").style.color = "black";
+                    document.getElementById("toteGoat").style.display = "none";
+                    for(var i = 0; i < 30; i++){
+                        if(document.getElementById(i) != null){
+                            document.getElementById(i).style.display = "none";
+                        }
+                    }
+                }, 1140);
+            }
+        }
+        document.getElementsByClassName("gasCanHolder")[0].appendChild(gasCan);
+    }
+}
+function moveSchubertOnToteGoat(){
+    const tote = document.getElementById("toteGoat");
+    var toteLeftOrRight = "left";
+    var leftToRightAnimation = tote.animate([
+        {left: "-30vw"},
+        {left: "110vw"},
+        {left: "-30vw"}
+    ], {
+        duration: 20000,
+        iterations: Infinity
+    });
+    setInterval(function(){
+        if(toteLeftOrRight == "left"){
+            toteLeftOrRight = "right";
+            tote.src = "Images/schubeOnTotegoatLeft.png";
+        }else if(toteLeftOrRight == "right"){
+            toteLeftOrRight = "left";
+            tote.src = "Images/schubeOnTotegoatRight.png";
+        }
+    }, 10000);
+    setTimeout(function(){
+        schubeComplete = true;
+        leftToRightAnimation.cancel();
+        document.getElementsByClassName("gasMeter")[0].style.display = "none";
+        document.getElementById("toteGoat").style.display = "none";
+        for(var i = 0; i < 30; i++){
+            if(document.getElementById(i) != null){
+                document.getElementById(i).style.display = "none";
+            }
+        }
+        document.getElementById("tempText").style.display = "block";
+    }, 85000);
+    setInterval(function(){
+        if(gas >= 300){
+            leftToRightAnimation.pause();
+        }
+    }, 0);
+}
+function gasCanCountDown(){
+    var countdown = setInterval(function(){
+        if(schubeComplete != true){
+            gas = gas - .25;
+        }
+    }, 25);
 }
 function firstForEverything(){
     if(firstClickUsed == "false"){
