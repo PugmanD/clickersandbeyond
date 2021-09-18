@@ -1,4 +1,3 @@
-//dont forget to make the version (var Game) to show when it is normal.
 var music = 0;
 var idFruit = document.getElementById("fruit");
 var carClicks = 0;
@@ -21,9 +20,9 @@ var fruit7ClckTimes = 0;
 var fruit7 = Math.floor(Math.random() * 90);
 var peachLeechClicks = 0;
 var codeUsed = "false";
-var Game = {version: "V:1.7.26", mode: "Beta"};
+var Game = {version: "V:2.9.29", mode: "Beta"};
 var raisinAmount = false;
-var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text", howAreYouGonnaFitThat: "how are you gonna get that engine in... oh thats how", /* make soon*/ kaBOOM: "kaBOOM!!!"};
+var achievement = {firstClick: "there's a first for everything", gettingTechy: "you're getting all techy with all this fancy text", howAreYouGonnaFitThat: "how are you gonna get that engine in... oh thats how", kaBOOM: "kaBOOM!!!"};
 var firstClickUsed = "false";
 var firstForEverythingOpen = false;
 var gettingAllTechyUsed = "false";
@@ -42,7 +41,11 @@ var howAreYouGonnaFitThatEngine = false;
 var howAreYouGonnaFitThatEngineUsed = "false";
 var howAreYouGonnaFitThatEngineOpen = false;
 var gas = 200;
-var schubeComplete = false;
+var schubeDead = false;
+var schubeOver = false;
+var kaBOOMUsed = "false";
+var kaBOOMOpen = false;
+var wonGame = "false";  
 setInterval(save, 10000);
 document.getElementById("fruit1").style.display = "none";
 document.getElementById("fruit2").style.display = "none";
@@ -81,7 +84,7 @@ document.getElementById("llamaTimer").style.display = "none";
 document.getElementsByClassName("gasMeter")[0].style.display = "none";
 document.getElementById("toteGoat").style.display = "none";
 document.getElementById("carHolder").style.display = "none";
-document.getElementById("tempText").style.display = "none";
+document.getElementById("winningScreen").style.display = "none";
 document.addEventListener("contextmenu", function(e){
     e.preventDefault();
 });
@@ -224,6 +227,7 @@ function save(){
     window.localStorage.setItem("v8Owned", v8Owned);
     window.localStorage.setItem("holeInHood", holeInHood);
     window.localStorage.setItem("howAreYouGonnaFitThatEngineUsed", howAreYouGonnaFitThatEngineUsed);
+    window.localStorage.setItem("wonGame", wonGame);
     console.log("Game Saved!");
 }
 function load(){
@@ -237,6 +241,7 @@ function load(){
     v8Owned = window.localStorage.getItem("v8Owned");
     holeInHood = window.localStorage.getItem("holeInHood");
     howAreYouGonnaFitThatEngineUsed = window.localStorage.getItem("howAreYouGonnaFitThatEngineUsed");
+    wonGame = window.localStorage.getItem("wonGame");
     document.getElementById("loader").style.display = "none";
 }
 function playAudio(){
@@ -263,6 +268,7 @@ function reset(){
     window.localStorage.setItem("v8Owned", "false");
     window.localStorage.setItem("holeInHood", "false");
     window.localStorage.setItem("howAreYouGonnaFitThatEngineUsed", "false");
+    window.localStorage.setItem("wonGame", "false");
     carClicks = parseInt(window.localStorage.getItem("numberSave"));
     autoClicks = parseInt(window.localStorage.getItem("autoclicks"));
     clicksPerClick = parseInt(window.localStorage.getItem("clicksPerClick"));
@@ -311,6 +317,12 @@ function update(){
     document.title = "Gti Clicker: " + carClicks + " Clicks";
     document.getElementById("autoclicks").innerHTML = "Autoclicks: " + autoClicks;
     document.getElementById("llamaClicks").innerHTML = "Llama Clicks: " + llamaClicks;
+    if(wonGame == "true"){
+        document.getElementById("pot").style.display = "none";
+    }
+    if(schubeOver == true && schubeDead == false){
+        document.getElementById("winningScreen").style.display = "block";
+    }
     if(isNaN(carClicks)){
         window.localStorage.setItem("numberSave", 0);
         window.localStorage.setItem("autoclicks", 0);
@@ -331,6 +343,7 @@ function update(){
     if(gas <= 0){
         //Later make the tote goat slowly slow down and stop then do dust in the wind but for now just do dust()
         dust();
+        schubeDead = true;
         document.getElementsByClassName("gasMeter")[0].style.display = "none";
         document.getElementById("dust").style.color = "black";
         document.getElementById("toteGoat").style.display = "none";
@@ -363,6 +376,9 @@ function update(){
     }
     if(codeUsed == null){
         codeUsed = "false";
+    }
+    if(wonGame == null){
+        wonGame = "false";
     }
     if(carClicks == 0){
         document.title = "Gti Clicker";
@@ -458,6 +474,7 @@ function fruitMania(){
             document.getElementById("audio").play();
         }, 15000);
     }
+    document.getElementById("version").style.display = "none";
     document.getElementById("opener").style.display = "none";
     document.getElementById("fruitSong").play()
     turnPurple();
@@ -792,9 +809,11 @@ function createGasCans(){
             gas += 45;
             carClicks += 800;
             if(gas >= 300){
+                schubeDead = true;
                 gasCan.onclick = null;
                 document.getElementById("toteGoat").src = "Images/explosion.gif";
                 document.getElementsByClassName("gasMeter")[0].style.display = "none";
+                kaBOOM();
                 setTimeout(function(){
                     dust();
                     document.getElementsByClassName("gasMeter")[0].style.display = "none";
@@ -832,7 +851,6 @@ function moveSchubertOnToteGoat(){
         }
     }, 10000);
     setTimeout(function(){
-        schubeComplete = true;
         leftToRightAnimation.cancel();
         document.getElementsByClassName("gasMeter")[0].style.display = "none";
         document.getElementById("toteGoat").style.display = "none";
@@ -841,8 +859,8 @@ function moveSchubertOnToteGoat(){
                 document.getElementById(i).style.display = "none";
             }
         }
-        document.getElementById("tempText").style.display = "block";
-    }, 85000);
+        schubeOver = true;
+    }, 93000);
     setInterval(function(){
         if(gas >= 300){
             leftToRightAnimation.pause();
@@ -850,11 +868,16 @@ function moveSchubertOnToteGoat(){
     }, 0);
 }
 function gasCanCountDown(){
-    var countdown = setInterval(function(){
-        if(schubeComplete != true){
+    setInterval(function(){
+        if(schubeDead == false && schubeOver == false){
             gas = gas - .25;
         }
     }, 25);
+}
+function keepPlaying(){
+    wonGame = "true";
+    save();
+    window.location.reload();
 }
 function firstForEverything(){
     if(firstClickUsed == "false"){
@@ -879,6 +902,20 @@ function howAreYouGonnaFitThat(){
         document.getElementById("achievement").innerHTML = achievement.howAreYouGonnaFitThat;
         howAreYouGonnaFitThatEngineUsed = "true";
         howAreYouGonnaFitThatEngineOpen = true;
+    }
+}
+function kaBOOM(){
+    if(kaBOOMUsed == "false"){
+        document.getElementById("alert").style.display = "block";
+        document.getElementById("dust").style.position = "absolute";
+        document.getElementById("dust").style.left = "50%";
+        document.getElementById("dust").style.transform = "translate(-50%, 0%)";
+        document.getElementById("dust").style.top = "200px";
+        document.getElementById("lost").style.top = "300px";
+        document.getElementById("alert").innerHTML = "<span>You unlocked the achievement <strong id='achievement'></strong>! Not that it means anything cuz you lost ;)</span>";
+        document.getElementById("achievement").innerHTML = achievement.kaBOOM;
+        kaBOOMUsed = "true";
+        kaBOOMOpen = true;
     }
 }
 function hideAlert(){

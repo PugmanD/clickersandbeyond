@@ -1,6 +1,28 @@
 ::placeholder{
     color: lightblue;
 }
+#winningScreen{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    text-align: center;
+    left: 0px;
+    top: 0px;
+    z-index: 10000000;
+}
+#keepPlaying{
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%);
+}
+#restart{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%);
+}
 #tempText{
     text-align: center;
 }
@@ -154,10 +176,14 @@
     position: absolute;
     left: -260px;
     top: 0px;
-    padding: 100% 130px;
+    height: 100%;
+    width: 260px;
     background-color: lightgray;
     z-index: 10000;
-    overflow-y: auto;
+    overflow-y: scroll;
+}
+.btn-holder::-webkit-scrollbar{
+    display: none;
 }
 .hider{
     position: absolute;

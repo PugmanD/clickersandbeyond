@@ -59,9 +59,7 @@
             <img src="Images/koneJesko.png" draggable="false" width="400px" id="kone" class="car" title="Koenigsegg Jesko" onclick="selectKone()">
         </div>
         <!--Misc.-->
-        <!--TAKE AWAY!!!-->
-        <h2 id="tempText">More coming soon? Definitely. Keep checking in! Report bugs on my <a target='_blank' href='https://github.com/PugmanD/clickersandbeyond/tree/main/Gti-Clicker'>github</a> or <a target='_blank' href='https://twitter.com/gticlicker'>twitter</a>, and always follow me and share with your friends. In my opinion this is the best update yet what do you think? Tell me on twitter!</h2>
-        <!--TAKE AWAY!!!-->
+        <!--Database-->
         <span id="span" onclick="show()">Show Autoclicks</span>
         <h2 id="autoclicks">Autoclicks: 0</h2>
         <div class="center">
@@ -89,12 +87,17 @@
             <h2 id="clicks">0</h2>
             <h4 id="clicks">POINTS</h4>
             <input type="text" placeholder="ENTER CODE HERE" id="input">
-            <button onclick="reset()" id="button">Restart Game</button>
+            <button onclick="reset();window.location.reload();" id="button">Restart Game</button>
             <button onclick="playAudio()" id="music">Music On</button>
         </div>
         <div class="alert" id="alert">
-            <span>You unlocked the achievement <strong id="achievement"></strong> see more in the achievment panel</span>
+            <span>You unlocked the achievement <strong id="achievement"></strong>!</span>
             <span class="x" onclick="hideAlert()">&times;</span>
+        </div>
+        <div id="winningScreen">
+            <h1>Congratulations! You won the game you can keep playing or restart your game</h1>
+            <button class="button" id="keepPlaying" onclick="keepPlaying()">Keep Playing</button>
+            <button class="button" id="restart" onclick="reset();window.location.reload();">Restart Game</button>
         </div>
         <h2 id="llamaText" onclick="robotoLettersClicked = true">A llama and an alpaca have come to eat your rolls with raisins... Click the llama not the alpaca!</h2>
         <h4 id="llamaClicks" onclick="robotoLettersClicked = true">Llama Clicks: 0</h4>
